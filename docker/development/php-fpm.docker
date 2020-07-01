@@ -1,0 +1,13 @@
+FROM php:7.4-fpm
+
+ADD ./php/php.ini "$PHP_INI_DIR/php.ini"
+
+RUN pecl install -o -f xdebug \
+    && docker-php-ext-enable xdebug
+
+RUN apt-get update && apt-get install -y libzip-dev libpq-dev libicu-dev \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install pdo_pgsql intl
+
+WORKDIR /app

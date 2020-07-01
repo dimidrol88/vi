@@ -1,0 +1,73 @@
+version: '3.2'
+services:
+  nginx:
+    build:
+      context: ./docker/development
+      dockerfile: nginx.docker
+    container_name: backloger-nginx
+    volumes:
+      - ./:/app
+    depends_on:
+      - php-fpm
+    ports:
+      - "8080:80"
+    networks:
+      - internal
+
+  php-fpm:
+    build:
+      context: ./docker/development
+      dockerfile: php-fpm.docker
+    container_name: backloger-php-fpm
+    volumes:
+      - ./:/app
+    depends_on:
+      - pgsql
+    networks:
+      - internal
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.10.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+
+  php-cli:
+    build:
+      context: ./docker/development
+      dockerfile: php-cli.docker
+    container_name: backloger-php-cli
+    volumes:
+      - ./:/app
+      - composer:/root/.composer/cache
+    depends_on:
+      - pgsql
+    networks:
+      - internal
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.10.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+
+  pgsql:
+    build:
+      context: ./docker/development
+      dockerfile: postgres.docker
+    container_name: backloger-pgsql
+    volumes:
+      - ./docker/development/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
+    ports:
+      - "54321:5432"
+    networks:
+      - internal
+
+volumes:
+  composer:
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/25
