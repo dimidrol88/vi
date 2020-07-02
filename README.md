@@ -1,6 +1,6 @@
 # README #
 
-### Задача ###
+## Задача ##
 
 Необходимо написать упрощённое REST API.
 
@@ -30,4 +30,16 @@ symfony/dependency-injection
 doctrine/orm
 guzzlehttp/guzzle
 
-### Init ###
+## Init ##
+
+### Для Linux
+```shell script
+make init
+```
+### Для Windows
+```shell script
+docker-compose up -d --build
+docker-compose run --rm php-cli composer install
+docker-compose run --rm php-cli php bin/console doctrine:migrations:migrate --no-interaction
+docker-compose run --rm php-cli php bin/console doctrine:fixtures:load --no-interaction
+```
