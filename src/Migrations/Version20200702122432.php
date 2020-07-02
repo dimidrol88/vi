@@ -22,13 +22,13 @@ final class Version20200702122432 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SEQUENCE "order_items_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE SEQUENCE "orders_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE "order_items" (id INT NOT NULL DEFAULT nextval(\'order_items_id_seq\'), product_id INT NOT NULL, order_id INT NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_62809DB04584665A ON "order_items" (product_id)');
+        $this->addSql('CREATE TABLE "order_items" (id INT NOT NULL, product_id INT NOT NULL, order_id INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_62809DB04584665A ON "order_items" (product_id)');
         $this->addSql('CREATE INDEX IDX_62809DB08D9F6D38 ON "order_items" (order_id)');
-        $this->addSql('CREATE TABLE "orders" (id INT NOT NULL DEFAULT nextval(\'orders_id_seq\'), user_id INT NOT NULL, price NUMERIC(10, 2) DEFAULT 0.00, status VARCHAR(10) NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE "orders" (id INT NOT NULL, user_id INT NOT NULL, status VARCHAR(10) NOT NULL, price NUMERIC(10, 2) NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN "orders".created IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "orders".updated IS \'(DC2Type:datetime_immutable)\'');
-        $this->addSql('ALTER TABLE "order_items" ADD CONSTRAINT FK_62809DB04584665A FOREIGN KEY (product_id) REFERENCES products (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE "order_items" ADD CONSTRAINT FK_62809DB04584665A FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE "order_items" ADD CONSTRAINT FK_62809DB08D9F6D38 FOREIGN KEY (order_id) REFERENCES "orders" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 

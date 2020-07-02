@@ -20,8 +20,8 @@ class Item
     private $id;
     /**
      * @var Product
-     * @ORM\OneToOne(targetEntity="App\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $product;
     /**
