@@ -20,3 +20,5 @@ services:
     resource: '../src/Controller'
     tags: ['controller.service_arguments']
 
+  App\Services\Payment\PaymentServiceInterface:
+    class: App\Services\Payment\YaPaymentService
