@@ -75,7 +75,7 @@ class Order
 
     public function getPrice(): float
     {
-        return $this->price;
+        return (float)$this->price;
     }
 
     public function setPrice(): void
@@ -91,6 +91,15 @@ class Order
         $this->price = $price;
     }
 
+    /**
+     * @param float $price
+     * @return bool
+     */
+    public function priceIsEqual(float $price): bool
+    {
+        return $this->getPrice() === (float)$price;
+    }
+
     public function getStatus(): string
     {
         return $this->status;
@@ -99,6 +108,14 @@ class Order
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew(): bool
+    {
+        return $this->status === self::STATUS_NEW;
     }
 
     public function getCreatedAt(): ?DateTimeImmutable
