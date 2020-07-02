@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Product
@@ -23,11 +24,13 @@ class Product
     private $id;
 
     /**
+     * @Assert\Length(min = 2, max = 250, allowEmptyString = false)
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @Assert\GreaterThanOrEqual(value=0.00)
      * @ORM\Column(type="decimal", precision=10, scale=2)
      */
     private $price;
