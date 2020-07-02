@@ -2,7 +2,6 @@
 
 namespace App\Entity\Order;
 
-use App\Entity\User;
 use App\Repository\Order\OrderRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -52,13 +51,16 @@ class Order
      */
     private $items;
 
-    public function __construct()
+    /**
+     * @param int $userId
+     */
+    public function __construct(int $userId)
     {
         $this->items = new ArrayCollection();
         $this->created = new DateTimeImmutable();
         $this->setUpdatedAt(new DateTimeImmutable());
         $this->setStatus(self::STATUS_NEW);
-        $this->setUserId(User::DEFAULT_USER_ID);
+        $this->setUserId($userId);
     }
 
     public function getId(): int
@@ -80,7 +82,7 @@ class Order
     {
         $price = 0.00;
 
-        foreach ($this->items as $item){
+        foreach ($this->items as $item) {
             $product = $item->getProduct();
 
             $price += $product->getPrice();
@@ -119,4 +121,23 @@ class Order
         $this->userId = $userId;
     }
 
+    /**
+     * @param Item[] $items
+     */
+    public function addItems(array $items): void
+    {
+        foreach ($items as $item) {
+            if (!$this->items->contains($item)) {
+                $this->items->add($item);
+            }
+        }
+    }
+
+    /**
+     * @return Item[]|array
+     */
+    public function getItems()
+    {
+        return $this->items->toArray();
+    }
 }
