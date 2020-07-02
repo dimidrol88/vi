@@ -2,6 +2,7 @@
 
 namespace App\Entity\Order;
 
+use App\Entity\User;
 use App\Repository\Order\OrderRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -57,7 +58,7 @@ class Order
         $this->created = new DateTimeImmutable();
         $this->setUpdatedAt(new DateTimeImmutable());
         $this->setStatus(self::STATUS_NEW);
-        $this->setUserId(1);
+        $this->setUserId(User::DEFAULT_USER_ID);
     }
 
     public function getId(): int
